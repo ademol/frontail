@@ -13,6 +13,7 @@ const program = require('./lib/options_parser');
 const serverBuilder = require('./lib/server_builder');
 const daemonize = require('./lib/daemonize');
 const usageStats = require('./lib/stats');
+const { IgnoreLine, SetIgnoreConfig } = require('./lib/server');
 
 /**
  * Parse args
@@ -55,28 +56,28 @@ if (program.daemonize) {
     appBuilder.authorize(program.user, program.password);
   }
   appBuilder
-    .static(path.join(__dirname, 'web', 'assets'))
-    .index(
-      path.join(__dirname, 'web', 'index.html'),
-      files,
-      filesNamespace,
-      program.theme
-    );
+      .static(path.join(__dirname, 'web', 'assets'))
+      .index(
+          path.join(__dirname, 'web', 'index.html'),
+          files,
+          filesNamespace,
+          program.theme
+      );
 
   const builder = serverBuilder();
   if (doSecure) {
     builder.secure(program.key, program.certificate);
   }
   const server = builder
-    .use(appBuilder.build())
-    .port(program.port)
-    .host(program.host)
-    .build();
+      .use(appBuilder.build())
+      .port(program.port)
+      .host(program.host)
+      .build();
 
   /**
    * socket.io setup
    */
-  const io = new Server({ path: `${urlPath}/socket.io` });
+  const io = new Server({path: `${urlPath}/socket.io`});
   io.attach(server);
 
   if (doAuthorization) {
@@ -89,8 +90,8 @@ if (program.daemonize) {
           return next(new Error('Session cookie not provided'), false);
         }
         const sessionId = cookieParser.signedCookie(
-          sessionIdEncoded,
-          sessionSecret
+            sessionIdEncoded,
+            sessionSecret
         );
         if (sessionId) {
           return next(null);
@@ -105,7 +106,8 @@ if (program.daemonize) {
   /**
    * Setup UI highlights
    */
-  let highlightConfig;
+  let highlightConfig = {ignoreLines: []}
+  let ignoreConfig = [];
   if (program.uiHighlight) {
     let presetPath;
 
@@ -116,7 +118,8 @@ if (program.daemonize) {
     }
 
     if (fs.existsSync(presetPath)) {
-      highlightConfig = JSON.parse(fs.readFileSync(presetPath));
+      highlightConfig = JSON.parse(fs.readFileSync(presetPath).toString());
+      SetIgnoreConfig(highlightConfig.ignoreLines);
     } else {
       throw new Error(`Preset file ${presetPath} doesn't exists`);
     }
@@ -145,7 +148,9 @@ if (program.daemonize) {
     }
 
     tailer.getBuffer().forEach((line) => {
-      socket.emit('line', line);
+      if (!IgnoreLine(line)) {
+        socket.emit('line', line);
+      }
     });
   });
 
@@ -153,7 +158,9 @@ if (program.daemonize) {
    * Send incoming data
    */
   tailer.on('line', (line) => {
-    filesSocket.emit('line', line);
+    if (!IgnoreLine(line)) {
+      filesSocket.emit('line', line);
+    }
   });
 
   stats.track('runtime', 'started');
