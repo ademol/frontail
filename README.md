@@ -6,7 +6,7 @@
 
 ## Quick start
 
-- `npm i frontail -g` or download a binary file from [Releases](https://github.com/mthenw/frontail/releases) page
+- `npm i frontail -g` 
 - `frontail /var/log/syslog`
 - visit [http://127.0.0.1:9001](http://127.0.0.1:9001)
 
@@ -26,7 +26,6 @@
 
 ## Installation options
 
-- download a binary file from [Releases](https://github.com/mthenw/frontail/releases) pagegit st
 - using [npm package](https://www.npmjs.com/package/frontail): `npm i frontail -g`
 
 ## Usage
