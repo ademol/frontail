@@ -1,5 +1,7 @@
+.idea
 node_modules
 test/fixtures/*.pem
 npm-debug.log
 dist
 .DS_Store
+.idea

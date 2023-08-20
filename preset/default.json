@@ -4,5 +4,9 @@
   },
   "lines": {
     "err": "font-weight: bold;"
-  }
+  },
+  "ignoreLines": [
+    "line_to_ignore_regex",
+    "statistics"
+  ]
 }
