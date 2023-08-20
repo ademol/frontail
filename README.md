@@ -4,8 +4,6 @@
 
 ![frontial](https://user-images.githubusercontent.com/455261/29570317-660c8122-8756-11e7-9d2f-8fea19e05211.gif)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/mthenw/frontail.svg)](https://hub.docker.com/r/mthenw/frontail/)
-
 ## Quick start
 
 - `npm i frontail -g` or download a binary file from [Releases](https://github.com/mthenw/frontail/releases) page
@@ -30,7 +28,6 @@
 
 - download a binary file from [Releases](https://github.com/mthenw/frontail/releases) pagegit st
 - using [npm package](https://www.npmjs.com/package/frontail): `npm i frontail -g`
-- using [Docker image](https://cloud.docker.com/repository/docker/mthenw/frontail): `docker run -d -P -v /var/log:/log mthenw/frontail /log/syslog`
 
 ## Usage
 
