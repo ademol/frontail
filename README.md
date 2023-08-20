@@ -78,11 +78,17 @@ Use `-` for streaming stdin:
     },
     "lines": {
         "err": "font-weight: bold;"
-    }
+    },
+    "ignoreLines": [
+        "line_to_ignore_regex",
+        "statistics"
+    ]
 }
 ```
 
 which means that every "err" string will be in red and every line containing "err" will be bolded.
+
+The "ignoreLines" is a way to ignore (server side) lines matching one or more regexes.
 
 _New presets are very welcome. If you don't like default or you would like to share yours, please create PR with json file._
 
@@ -91,6 +97,8 @@ Available presets:
 - default
 - npmlog
 - python
+
+
 
 ### Running behind nginx
 
